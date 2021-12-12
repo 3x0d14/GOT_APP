@@ -339,9 +339,11 @@ server <- function(input, output) {
 
   output$barchar<- renderPlot({
     appearence <-   appearences %>% left_join(scenes) %>% filter(name == input$maincharacters) %>% filter(episodeId == input$maincharepisodeID) %>% group_by(location) %>% summarise(duration = sum(duration/60))
-    
-    barplot(appearence$duration,name=appearence$location,xlab = "Time appeared ", ylab = "Locations", col="#e6f4e3", las=1)
-    
+    if(!(is.na(appearence$duration[1]) || is.na(appearence$location[1])))
+      barplot(appearence$duration,name=appearence$location,xlab = "Time appeared ", ylab = "Locations", col="#e6f4e3", las=1)
+    else{
+      barplot(c(0),name=c(0))
+    }
   })
     
 }
